@@ -13,6 +13,6 @@ ADD tsconfig.json tsconfig.json
 RUN [ "npm", "run", "build"]
 
 FROM dependencies AS prod
-COPY --from=build dist dist
-ENTRYPOINT [ "/usr/local/bin/npm" ]
-CMD [ "start" ]
+COPY --from=build /run/dist /run
+ENTRYPOINT [ "/usr/local/bin/node" ]
+CMD [ "/run/index.js" ]

@@ -255,7 +255,7 @@ static void http_get_task(void *pvParameters)
                     tenPower = 2;
 
                     if (sideIndex == 5) {
-                        sideIndex = 1;
+                        sideIndex = 0;
                     }
 
                     ESP_LOGI(TAG, "Side %d", sideIndex);

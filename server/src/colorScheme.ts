@@ -13,7 +13,7 @@ export function colorScheme(): RequestHandler {
         res.writeHead(200);
 
         for (const colors of Object.values(scheme)) {
-            res.write(colors.flat().join(',') + '\n');
+            res.write(colors.flat().join(',') + ',\n');
         }
 
         res.end()

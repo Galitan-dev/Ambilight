@@ -1,6 +1,6 @@
 import net from 'net';
 import { env } from 'process';
-import { generateColorScheme } from './colorScheme';
+import { generateColorScheme, stringifyColorScheme } from './colorScheme';
 
 const PORT = env.PORT ?? 3000;
 
@@ -10,7 +10,7 @@ const server = net.createServer((socket) => {
     const stream = setInterval(() => {
         const colorScheme = generateColorScheme();
         
-        if (socket.writable) socket.write(JSON.stringify(colorScheme));
+        if (socket.writable) socket.write(stringifyColorScheme(colorScheme));
     })
     
     socket.on('end', () => {

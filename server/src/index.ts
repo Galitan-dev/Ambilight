@@ -1,11 +1,24 @@
-import express from 'express';
+import net from 'net';
 import { env } from 'process';
-import { colorScheme } from './colorScheme';
+import { generateColorScheme } from './colorScheme';
 
 const PORT = env.PORT ?? 3000;
 
-const app = express();
+const server = net.createServer((socket) => {
+    console.log(`Client connected: ${socket.remoteAddress}:${socket.remotePort}`);
+    
+    const stream = setInterval(() => {
+        const colorScheme = generateColorScheme();
+        
+        if (socket.writable) socket.write(JSON.stringify(colorScheme));
+    })
+    
+    socket.on('end', () => {
+        console.log(`Client disconnected: ${socket.remoteAddress}:${socket.remotePort}`);
+        clearInterval(stream);
+    });
+});
 
-app.use('/color-scheme', colorScheme());
-
-app.listen(PORT, () => console.log(`Ambilight server listening on port ${PORT}`))
+server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});

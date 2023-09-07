@@ -10,7 +10,7 @@ const server = net.createServer((socket) => {
     const stream = setInterval(() => {
         const colorScheme = generateColorScheme();
         
-        if (socket.writable) socket.write(stringifyColorScheme(colorScheme));
+        if (socket.writable) socket.write(stringifyColorScheme(colorScheme) + '\n');
     })
     
     socket.on('end', () => {

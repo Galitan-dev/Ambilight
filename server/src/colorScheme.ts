@@ -10,6 +10,6 @@ export function colorScheme(): RequestHandler {
             right: Array.from({ length: leds.vertical }, () => [100, 0, 100]),
         };
 
-        res.send(Object.values(scheme).flat(2).join(',') + ',')
+        res.send('[' + Object.values(scheme).flat(2).join(',') + ']')
     }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            gap: 10px;
+        }
+
+        canvas {
+            width: 70vw;
+            height: 50vw;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
+            height: 50vw;
+        }
+
+        span {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+        <div></div>
+        <canvas></canvas>
+    <script>
+        const strip = document.querySelector('div');
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const ledCount = 50;
+
+        const image = new Image;
+        image.onload = () => {
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+            const s = data.height / ledCount;
+
+            Array.from({ length: ledCount }, (_, i) => {
+                const led = document.createElement('span');
+
+                let r = 0, g = 0, b = 0, count = 0;
+                let bx = s;
+                let by = s * i;
+
+                for (let x = 0; x < s; x++) {
+                    for (let y = 0; y < s; y++) {
+                        const i = ((by + y) * data.width + x + bx) * 4;
+                        r += data.data[i];
+                        g += data.data[i + 1];
+                        b += data.data[i + 2];
+                        count += 1;
+                    }
+                }
+
+                r /= count;
+                g /= count;
+                b /= count;
+
+                led.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                led.style.height = '100%';
+                led.style.width = (screen.height * 0.5 - 2 * (ledCount - 1)) / ledCount + 'px';
+                strip.appendChild(led);
+            });
+        }
+        
+        image.src = "/download.png";
+    </script>
+</body>
+</html>
